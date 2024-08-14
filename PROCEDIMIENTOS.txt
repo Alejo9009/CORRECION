@@ -1,0 +1,334 @@
+PROCEDIMIENTOS
+
+
+piso
+Agregar:
+
+DELIMITER //
+
+CREATE PROCEDURE AgregarPiso(
+    IN p_nombrePiso VARCHAR(140)
+)
+BEGIN
+    INSERT INTO piso (nombrePiso)
+    VALUES (p_nombrePiso);
+END //
+
+DELIMITER ;
+Editar:
+
+DELIMITER //
+
+CREATE PROCEDURE EditarPiso(
+    IN p_idPiso INT,
+    IN p_nombrePiso VARCHAR(140)
+)
+BEGIN
+    UPDATE piso
+    SET nombrePiso = p_nombrePiso
+    WHERE idPiso = p_idPiso;
+END //
+
+DELIMITER ;
+Eliminar:
+
+DELIMITER //
+
+CREATE PROCEDURE EliminarPiso(
+    IN p_idPiso INT
+)
+BEGIN
+    DELETE FROM piso
+    WHERE idPiso = p_idPiso;
+END //
+
+DELIMITER ;
+Consultar:
+
+DELIMITER //
+
+CREATE PROCEDURE ConsultarPiso(
+    IN p_idPiso INT,
+    OUT p_nombrePiso VARCHAR(140)
+)
+BEGIN
+    SELECT nombrePiso
+    INTO p_nombrePiso
+    FROM piso
+    WHERE idPiso = p_idPiso;
+END //
+
+DELIMITER ;
+2. piso_apartamento
+Agregar:
+
+DELIMITER //
+
+CREATE PROCEDURE AgregarPisoApartamento(
+    IN p_pisos INT,
+    IN p_apartament INT
+)
+BEGIN
+    INSERT INTO piso_apartamento (pisos, apartament)
+    VALUES (p_pisos, p_apartament);
+END //
+
+DELIMITER ;
+Editar:
+
+DELIMITER //
+
+CREATE PROCEDURE EditarPisoApartamento(
+    IN p_pisos INT,
+    IN p_apartament INT
+)
+BEGIN
+    UPDATE piso_apartamento
+    SET pisos = p_pisos, apartament = p_apartament
+    WHERE pisos = p_pisos AND apartament = p_apartament;
+END
+
+
+Registro_torre
+Agregar:
+
+DELIMITER //
+
+CREATE PROCEDURE AgregarRegistroTorre(
+    IN p_idRol VARCHAR(150),
+    IN p_idTorre INT
+)
+BEGIN
+    INSERT INTO registro_torre (idRol, idTorre)
+    VALUES (p_idRol, p_idTorre);
+END //
+
+DELIMITER ;
+Editar:
+
+DELIMITER //
+
+CREATE PROCEDURE EditarRegistroTorre(
+    IN p_idRol VARCHAR(150),
+    IN p_idTorre INT
+)
+BEGIN
+    UPDATE registro_torre
+    SET idTorre = p_idTorre
+    WHERE idRol = p_idRol;
+END //
+
+DELIMITER ;
+Eliminar:
+
+DELIMITER //
+
+CREATE PROCEDURE EliminarRegistroTorre(
+    IN p_idRol VARCHAR(150),
+    IN p_idTorre INT
+)
+BEGIN
+    DELETE FROM registro_torre
+    WHERE idRol = p_idRol AND idTorre = p_idTorre;
+END //
+
+DELIMITER ;
+Consultar:
+sql
+Copiar código
+DELIMITER //
+
+CREATE PROCEDURE ConsultarRegistroTorre(
+    IN p_idRol VARCHAR(150),
+    OUT p_idTorre INT
+)
+BEGIN
+    SELECT idTorre
+    INTO p_idTorre
+    FROM registro_torre
+    WHERE idRol = p_idRol;
+END //
+
+DELIMITER ;
+
+ torre
+Agregar:
+
+DELIMITER //
+
+CREATE PROCEDURE AgregarTorre(
+    IN p_nombreTorre VARCHAR(110)
+)
+BEGIN
+    INSERT INTO torre (nombreTorre)
+    VALUES (p_nombreTorre);
+END //
+
+DELIMITER ;
+Editar:
+
+DELIMITER //
+
+CREATE PROCEDURE EditarTorre(
+    IN p_idTorre INT,
+    IN p_nombreTorre VARCHAR(110)
+)
+BEGIN
+    UPDATE torre
+    SET nombreTorre = p_nombreTorre
+    WHERE idTorre = p_idTorre;
+END //
+
+DELIMITER ;
+Eliminar:
+
+DELIMITER //
+
+CREATE PROCEDURE EliminarTorre(
+    IN p_idTorre INT
+)
+BEGIN
+    DELETE FROM torre
+    WHERE idTorre = p_idTorre;
+END //
+
+DELIMITER ;
+Consultar:
+
+DELIMITER //
+
+CREATE PROCEDURE ConsultarTorre(
+    IN p_idTorre INT,
+    OUT p_nombreTorre VARCHAR(110)
+)
+BEGIN
+    SELECT nombreTorre
+    INTO p_nombreTorre
+    FROM torre
+    WHERE idTorre = p_idTorre;
+END //
+
+DELIMITER ;
+ torre_piso
+Agregar:
+
+DELIMITER //
+
+CREATE PROCEDURE AgregarTorrePiso(
+    IN p_torre INT,
+    IN p_piso INT
+)
+BEGIN
+    INSERT INTO torre_piso (torre, piso)
+    VALUES (p_torre, p_piso);
+END //
+
+DELIMITER ;
+Editar:
+
+DELIMITER //
+
+CREATE PROCEDURE EditarTorrePiso(
+    IN p_torre INT,
+    IN p_piso INT
+)
+BEGIN
+    UPDATE torre_piso
+    SET piso = p_piso
+    WHERE torre = p_torre;
+END //
+
+DELIMITER ;
+Eliminar:
+
+DELIMITER //
+
+CREATE PROCEDURE EliminarTorrePiso(
+    IN p_torre INT,
+    IN p_piso INT
+)
+BEGIN
+    DELETE FROM torre_piso
+    WHERE torre = p_torre AND piso = p_piso;
+END //
+
+DELIMITER ;
+
+CONSULTAR:
+
+DELIMITER //
+
+CREATE PROCEDURE ConsultarTorrePiso(
+    IN p_torre INT,
+    IN p_piso INT
+)
+BEGIN
+    SELECT torre, piso
+    FROM torre_piso
+    WHERE torre = p_torre AND piso = p_piso;
+END //
+
+DELIMITER ;
+
+zonascomunes
+
+Agregar:
+
+DELIMITER //
+
+CREATE PROCEDURE AgregarZonasComunes(
+    IN p_tipoZonacomun VARCHAR(145)
+)
+BEGIN
+    INSERT INTO zonascomunes (tipoZonacomun)
+    VALUES (p_tipoZonacomun);
+END //
+
+DELIMITER ;
+
+Editar:
+
+DELIMITER //
+
+CREATE PROCEDURE EditarZonasComunes(
+    IN p_idZonasComunes INT,
+    IN p_tipoZonacomun VARCHAR(145)
+)
+BEGIN
+    UPDATE zonascomunes
+    SET tipoZonacomun = p_tipoZonacomun
+    WHERE idZonasComunes = p_idZonasComunes;
+END //
+
+DELIMITER ;
+
+Eliminar:
+
+DELIMITER //
+
+CREATE PROCEDURE EliminarZonasComunes(
+    IN p_idZonasComunes INT
+)
+BEGIN
+    DELETE FROM zonascomunes
+    WHERE idZonasComunes = p_idZonasComunes;
+END //
+
+DELIMITER ;
+
+Consultar:
+
+DELIMITER //
+
+CREATE PROCEDURE ConsultarZonasComunes(
+    IN p_idZonasComunes INT,
+    OUT p_tipoZonacomun VARCHAR(145)
+)
+BEGIN
+    SELECT tipoZonacomun
+    INTO p_tipoZonacomun
+    FROM zonascomunes
+    WHERE idZonasComunes = p_idZonasComunes;
+END //
+
+DELIMITER ;

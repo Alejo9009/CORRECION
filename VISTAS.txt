@@ -1,0 +1,93 @@
+VISTAS
+
+
+ agendar: 
+
+CREATE VIEW vista_agendas_detalle AS
+SELECT idAgendar AS 'ID de Agendamiento', tipoCategoria AS 'Categoría de Evento', hora AS 'Hora', fecha AS 'Fecha', apartament AS 'ID de Apartamento'
+FROM agendar;
+
+agendar_zona
+
+CREATE VIEW vista_agendas_zonas AS
+SELECT agenda AS 'ID de Agenda', zona AS 'ID de Zona'
+FROM agendar_zona;
+
+anuncio
+
+CREATE VIEW vista_anuncios_detalle AS
+SELECT idAnuncios AS 'ID de Anuncio', nombre AS 'Nombre del Anuncio', correo AS 'Correo de Contacto', hora AS 'Hora de Publicación', fecha AS 'Fecha de Publicación', imagenes AS 'Imagen', descripcion AS 'Descripción', registro AS 'ID de Registro'
+FROM anuncio;
+
+apartamento
+
+CREATE VIEW vista_apartamentos_info AS
+SELECT idApartamento AS 'ID de Apartamento', nombreApartamento AS 'Nombre del Apartamento'
+FROM apartamento;
+
+apartamento_parqueadero
+
+CREATE VIEW vista_apartamento_parqueadero_relacion AS
+SELECT apartamen AS 'ID de Apartamento', parking AS 'ID de Parqueadero'
+FROM apartamento_parqueadero;
+
+
+parqueadero
+
+CREATE VIEW vista_parqueaderos_info AS
+SELECT idSolicitud AS 'ID de Solicitud', numeroParqueadero AS 'Número de Parqueadero', placaVehiculo AS 'Placa del Vehículo', modeloVehiculo AS 'Modelo del Vehículo', piso AS 'Piso', torre AS 'Torre', nombreSolicitante AS 'Nombre del Solicitante', documentoSolicitante AS 'Documento del Solicitante'
+FROM parqueadero;
+
+pagos
+
+CREATE VIEW vista_pagos_detalle AS
+SELECT idPagos AS 'ID de Pago', tipoNoti AS 'Tipo de Notificación', valorPago AS 'Valor', fechaPago AS 'Fecha de Pago', apart AS 'ID de Apartamento'
+FROM pagos;
+
+piso: 
+
+CREATE VIEW vista_pisos_info AS
+SELECT idPiso AS 'ID de Piso', nombrePiso AS 'Nombre del Piso'
+FROM piso;
+
+piso_apartamento
+
+CREATE VIEW vista_pisos_apartamentos AS
+SELECT pisos AS 'ID de Piso', apartament AS 'ID de Apartamento'
+FROM piso_apartamento;
+
+programar_cita
+
+CREATE VIEW vista_citas_programadas_detalle AS
+SELECT idCita AS 'ID de Cita', tipoCita AS 'Tipo de Cita', torre AS 'ID de Torre', piso AS 'ID de Piso', apartamento AS 'ID de Apartamento', nombre_completo AS 'Nombre Completo', numeroDocumento AS 'Número de Documento', celular AS 'Número de Celular', correo AS 'Correo Electrónico', hora AS 'Hora', fecha AS 'Fecha', aparta AS 'ID de Apartamento Relacionado'
+FROM programar_cita;
+
+registro:
+
+CREATE VIEW vista_registro_detalle AS
+SELECT idRol AS 'ID de Rol', tipoDocumento AS 'Tipo de Documento', numeroDocumento AS 'Número de Documento', nombre AS 'Nombre', apellido AS 'Apellido', torre AS 'ID de Torre', piso AS 'ID de Piso', apartamento AS 'ID de Apartamento', correo AS 'Correo Electrónico', celular AS 'Número de Celular', usuario AS 'Nombre de Usuario', contraseña AS 'Contraseña'
+FROM registro;
+
+ registro_torre:
+
+CREATE VIEW vista_registro_torres_relacion AS
+SELECT idRol AS 'ID de Rol', idTorre AS 'ID de Torre'
+FROM registro_torre;
+
+ torre:
+
+CREATE VIEW vista_torres_info AS
+SELECT idTorre AS 'ID de Torre', nombreTorre AS 'Nombre de Torre'
+FROM torre;
+
+torre_piso
+
+CREATE VIEW vista_torre_pisos_relacion AS
+SELECT torre AS 'ID de Torre', piso AS 'ID de Piso'
+FROM torre_piso;
+
+zonascomunes
+
+CREATE VIEW vista_zonas_comunes_info AS
+SELECT idZonasComunes AS 'ID de Zona Común', tipoZonacomun AS 'Tipo de Zona Común'
+FROM zonascomunes;

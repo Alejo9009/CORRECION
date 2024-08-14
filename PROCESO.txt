@@ -1,0 +1,2678 @@
+Microsoft Windows [Versión 10.0.22631.4037]
+(c) Microsoft Corporation. Todos los derechos reservados.
+
+C:\Users\apira>cd..
+
+C:\Users>cd..
+
+C:\>cd C:\xampp\mysql\bin
+
+C:\xampp\mysql\bin>mysql -u root -h localhost -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 88
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| sets               |
+| test               |
++--------------------+
+6 rows in set (0.001 sec)
+
+MariaDB [(none)]> use sets;
+Database changed
+MariaDB [sets]> show tables;
++----------------+
+| Tables_in_sets |
++----------------+
+| agendar        |
+| anuncio        |
+| apartamento    |
+| pagos          |
+| parqueadero    |
+| piso           |
+| programar_cita |
+| registro       |
+| torre          |
+| zonascomunes   |
++----------------+
+10 rows in set (0.001 sec)
+
+MariaDB [sets]> describe registro,
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+MariaDB [sets]> describe registro;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| idRol           | int(11)      | NO   | PRI | NULL    |       |
+| tipoDocumento   | varchar(45)  | NO   |     | NULL    |       |
+| numeroDocumento | int(11)      | NO   |     | NULL    |       |
+| nombre          | varchar(145) | NO   |     | NULL    |       |
+| apellido        | varchar(145) | NO   |     | NULL    |       |
+| torre           | int(11)      | NO   |     | NULL    |       |
+| piso            | int(11)      | NO   |     | NULL    |       |
+| apartamento     | int(11)      | NO   |     | NULL    |       |
+| correo          | varchar(145) | NO   |     | NULL    |       |
+| celular         | int(11)      | NO   |     | NULL    |       |
+| usuario         | varchar(100) | NO   |     | NULL    |       |
+| contraseña      | varchar(100) | NO   |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+12 rows in set (0.013 sec)
+
+MariaDB [sets]> describe anuncio;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| idAnuncios     | int(11)      | NO   | PRI | NULL    |       |
+| nombre         | varchar(140) | NO   |     | NULL    |       |
+| correo         | varchar(145) | NO   |     | NULL    |       |
+| hora           | time         | NO   |     | NULL    |       |
+| fecha          | date         | NO   |     | NULL    |       |
+| imagenes       | varchar(145) | YES  |     | NULL    |       |
+| descripcion    | varchar(145) | NO   |     | NULL    |       |
+| registro_idRol | int(11)      | NO   |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+8 rows in set (0.010 sec)
+
+MariaDB [sets]> alter table anuncio add constraint FKidRol foreign key(registro_idRol) references registro (idRol);
+Query OK, 0 rows affected (0.039 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> create table registro_torre(
+    -> idRol int not null,
+    -> idTorre int not null
+    -> );
+Query OK, 0 rows affected (0.015 sec)
+
+MariaDB [sets]> describe registro;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| idRol           | int(11)      | NO   | PRI | NULL    |       |
+| tipoDocumento   | varchar(45)  | NO   |     | NULL    |       |
+| numeroDocumento | int(11)      | NO   |     | NULL    |       |
+| nombre          | varchar(145) | NO   |     | NULL    |       |
+| apellido        | varchar(145) | NO   |     | NULL    |       |
+| torre           | int(11)      | NO   |     | NULL    |       |
+| piso            | int(11)      | NO   |     | NULL    |       |
+| apartamento     | int(11)      | NO   |     | NULL    |       |
+| correo          | varchar(145) | NO   |     | NULL    |       |
+| celular         | int(11)      | NO   |     | NULL    |       |
+| usuario         | varchar(100) | NO   |     | NULL    |       |
+| contraseña      | varchar(100) | NO   |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+12 rows in set (0.012 sec)
+
+MariaDB [sets]> describe torre;
++-------------+---------+------+-----+---------+-------+
+| Field       | Type    | Null | Key | Default | Extra |
++-------------+---------+------+-----+---------+-------+
+| idTorre     | int(11) | NO   | PRI | NULL    |       |
+| nombreTorre | int(11) | NO   |     | NULL    |       |
++-------------+---------+------+-----+---------+-------+
+2 rows in set (0.033 sec)
+
+MariaDB [sets]> describe registro_torre;
++---------+---------+------+-----+---------+-------+
+| Field   | Type    | Null | Key | Default | Extra |
++---------+---------+------+-----+---------+-------+
+| idRol   | int(11) | NO   |     | NULL    |       |
+| idTorre | int(11) | NO   |     | NULL    |       |
++---------+---------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> alter table registro_torre add constraint FKidRol foreign key(idRol) references registro (idRol);
+ERROR 1005 (HY000): Can't create table `sets`.`registro_torre` (errno: 121 "Duplicate key on write or update")
+MariaDB [sets]> alter table registro_torre add constraint FKidTorre foreign key(idTorre) references torre (idTorre);
+Query OK, 0 rows affected (0.041 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> alter table registro_torre add constraint FKidRol foreign key(idRol) references registro(idRol);
+ERROR 1005 (HY000): Can't create table `sets`.`registro_torre` (errno: 121 "Duplicate key on write or update")
+MariaDB [sets]> Bye
+Ctrl-C -- exit!
+
+C:\xampp\mysql\bin>mysql -u root -h localhost -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 171
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| sets               |
+| test               |
++--------------------+
+6 rows in set (0.001 sec)
+
+MariaDB [(none)]> use sets;
+Database changed
+MariaDB [sets]> show tables;
++----------------+
+| Tables_in_sets |
++----------------+
+| agendar        |
+| anuncio        |
+| apartamento    |
+| pagos          |
+| parqueadero    |
+| piso           |
+| programar_cita |
+| registro       |
+| registro_torre |
+| torre          |
+| zonascomunes   |
++----------------+
+11 rows in set (0.001 sec)
+
+MariaDB [sets]> alter table registro_torre add constraint FKidRol foreign key(idRol) references registro(idRol);
+ERROR 1005 (HY000): Can't create table `sets`.`registro_torre` (errno: 121 "Duplicate key on write or update")
+MariaDB [sets]> SHOW CREATE TABLE registro_torre;
++----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table          | Create Table
+
+                                               |
++----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| registro_torre | CREATE TABLE `registro_torre` (
+  `idRol` int(11) NOT NULL,
+  `idTorre` int(11) NOT NULL,
+  KEY `FKidTorre` (`idTorre`),
+  CONSTRAINT `FKidTorre` FOREIGN KEY (`idTorre`) REFERENCES `torre` (`idTorre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [sets]> SHOW INDEXES FROM registro_torre;
++----------------+------------+-----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table          | Non_unique | Key_name  | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++----------------+------------+-----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| registro_torre |          1 | FKidTorre |            1 | idTorre     | A         |           0 |     NULL | NULL   |      | BTREE      |         |               |
++----------------+------------+-----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+1 row in set (0.001 sec)
+
+MariaDB [sets]> ALTER TABLE registro_torre DROP FOREIGN KEY FKidRol;
+ERROR 1091 (42000): Can't DROP FOREIGN KEY `FKidRol`; check that it exists
+MariaDB [sets]> ALTER TABLE registro_torre ADD CONSTRAINT FKidRol FOREIGN KEY(idRol) REFERENCES registro(idRol);
+ERROR 1005 (HY000): Can't create table `sets`.`registro_torre` (errno: 121 "Duplicate key on write or update")
+MariaDB [sets]> SELECT CONSTRAINT_NAME
+    -> FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+    -> WHERE CONSTRAINT_NAME = 'FKidRol';
++-----------------+
+| CONSTRAINT_NAME |
++-----------------+
+| FKidRol         |
++-----------------+
+1 row in set (0.084 sec)
+
+MariaDB [sets]> ALTER TABLE registro_torre ADD FOREIGN KEY (idRol) REFERENCES registro(idRol);
+Query OK, 0 rows affected (0.044 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> create table torre_piso(
+    -> torre int not null,
+    -> piso int not null
+    -> );
+Query OK, 0 rows affected (0.016 sec)
+
+MariaDB [sets]> describe torre;
++-------------+---------+------+-----+---------+-------+
+| Field       | Type    | Null | Key | Default | Extra |
++-------------+---------+------+-----+---------+-------+
+| idTorre     | int(11) | NO   | PRI | NULL    |       |
+| nombreTorre | int(11) | NO   |     | NULL    |       |
++-------------+---------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> describe piso;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| idPiso     | int(11)      | NO   | PRI | NULL    |       |
+| nombrePiso | varchar(140) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+2 rows in set (0.011 sec)
+
+MariaDB [sets]> describe torre_piso;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| torre | int(11) | NO   |     | NULL    |       |
+| piso  | int(11) | NO   |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+2 rows in set (0.013 sec)
+
+MariaDB [sets]> ALTER TABLE torre_piso ADD FOREIGN KEY (torre) REFERENCES torre(idTorre);
+Query OK, 0 rows affected (0.044 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> ALTER TABLE torre_piso ADD FOREIGN KEY (piso) REFERENCES piso(idPiso);
+Query OK, 0 rows affected (0.039 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> create table piso_apartamento(
+    -> pisos int not null,
+    -> apartament int not null
+    -> );
+Query OK, 0 rows affected (0.017 sec)
+
+MariaDB [sets]> describe piso;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| idPiso     | int(11)      | NO   | PRI | NULL    |       |
+| nombrePiso | varchar(140) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> describe apartamento;
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| idApartamento     | int(11)      | NO   | PRI | NULL    |       |
+| nombreApartamento | varchar(145) | NO   |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+2 rows in set (0.011 sec)
+
+MariaDB [sets]> describe piso_apartamento;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| pisos      | int(11) | NO   |     | NULL    |       |
+| apartament | int(11) | NO   |     | NULL    |       |
++------------+---------+------+-----+---------+-------+
+2 rows in set (0.013 sec)
+
+MariaDB [sets]> ALTER TABLE piso_apartamento ADD FOREIGN KEY (pisos) REFERENCES piso(idPiso);
+Query OK, 0 rows affected (0.043 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> ALTER TABLE piso_apartamento ADD FOREIGN KEY (apartament) REFERENCES apartamento(idApartamento);
+Query OK, 0 rows affected (0.040 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> describe pagos;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| idPagos   | int(11)      | NO   | PRI | NULL    |       |
+| tipoNoti  | varchar(145) | NO   |     | NULL    |       |
+| valorPago | int(11)      | NO   |     | NULL    |       |
+| fechaPago | datetime     | NO   |     | NULL    |       |
+| apart     | int(11)      | NO   |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+5 rows in set (0.013 sec)
+
+MariaDB [sets]> describe apartamento;
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| idApartamento     | int(11)      | NO   | PRI | NULL    |       |
+| nombreApartamento | varchar(145) | NO   |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+2 rows in set (0.014 sec)
+
+MariaDB [sets]> ALTER TABLE pagos ADD FOREIGN KEY (apart) REFERENCES apartamento(idApartamento);
+Query OK, 0 rows affected (0.046 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> describe apartamento;
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| idApartamento     | int(11)      | NO   | PRI | NULL    |       |
+| nombreApartamento | varchar(145) | NO   |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> describe programar_cita;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| idCita          | int(11)      | NO   | PRI | NULL    |       |
+| tipoCita        | varchar(145) | NO   |     | NULL    |       |
+| torre           | int(11)      | NO   |     | NULL    |       |
+| piso            | int(11)      | NO   |     | NULL    |       |
+| apartamento     | int(11)      | NO   |     | NULL    |       |
+| nombre          | varchar(145) | NO   |     | NULL    |       |
+| numeroDocumento | int(11)      | NO   |     | NULL    |       |
+| celular         | int(11)      | NO   |     | NULL    |       |
+| correo          | varchar(145) | NO   |     | NULL    |       |
+| hora            | time         | NO   |     | NULL    |       |
+| fecha           | date         | NO   |     | NULL    |       |
+| aparta          | int(11)      | NO   |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+12 rows in set (0.011 sec)
+
+MariaDB [sets]> ALTER TABLE apartamento ADD FOREIGN KEY (aparta) REFERENCES apartamento(idApartamento);
+ERROR 1072 (42000): Key column 'aparta' doesn't exist in table
+MariaDB [sets]> ALTER TABLE programar_cita ADD FOREIGN KEY (aparta) REFERENCES apartamento(idApartamento);
+Query OK, 0 rows affected (0.053 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> create table apartamento_parqueadero(
+    -> apartamen int not null,
+    -> parking int not null
+    -> );
+Query OK, 0 rows affected (0.018 sec)
+
+MariaDB [sets]> describe apartamento;
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| idApartamento     | int(11)      | NO   | PRI | NULL    |       |
+| nombreApartamento | varchar(145) | NO   |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> describe parqueadero;
++----------------------+--------------+------+-----+---------+-------+
+| Field                | Type         | Null | Key | Default | Extra |
++----------------------+--------------+------+-----+---------+-------+
+| idSolicitud          | int(11)      | NO   | PRI | NULL    |       |
+| numeroParqueadero    | int(11)      | NO   |     | NULL    |       |
+| placaVehiculo        | varchar(140) | NO   |     | NULL    |       |
+| modeloVehiculo       | varchar(145) | NO   |     | NULL    |       |
+| piso                 | int(11)      | NO   |     | NULL    |       |
+| torre                | int(11)      | NO   |     | NULL    |       |
+| nombreSolicitante    | varchar(145) | NO   |     | NULL    |       |
+| documentoSolicitante | int(11)      | NO   |     | NULL    |       |
++----------------------+--------------+------+-----+---------+-------+
+8 rows in set (0.012 sec)
+
+MariaDB [sets]> describe apartamento_parqueadero;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| apartamen | int(11) | NO   |     | NULL    |       |
+| parking   | int(11) | NO   |     | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+2 rows in set (0.013 sec)
+
+MariaDB [sets]> ALTER TABLE apartamento_parqueadero ADD FOREIGN KEY (apartamen) REFERENCES apartamento(idApartamento);
+Query OK, 0 rows affected (0.046 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> ALTER TABLE apartamento_parqueadero ADD FOREIGN KEY (parking) REFERENCES parqueadero(idSolicitud);
+Query OK, 0 rows affected (0.038 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> describe apartamento;
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| idApartamento     | int(11)      | NO   | PRI | NULL    |       |
+| nombreApartamento | varchar(145) | NO   |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> describe agendar;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| idAgendar     | int(11)      | NO   | PRI | NULL    |       |
+| tipoCategoria | varchar(145) | NO   |     | NULL    |       |
+| hora          | time         | NO   |     | NULL    |       |
+| fecha         | date         | NO   |     | NULL    |       |
+| apartament    | int(11)      | NO   |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+5 rows in set (0.012 sec)
+
+MariaDB [sets]> ALTER TABLE agendar ADD FOREIGN KEY (apartament) REFERENCES apartamento(idApartamento);
+Query OK, 0 rows affected (0.041 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> create table agendar_zona(
+    -> agenda int not null,
+    -> zona  int not null
+    -> );
+Query OK, 0 rows affected (0.017 sec)
+
+MariaDB [sets]> describe agendar;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| idAgendar     | int(11)      | NO   | PRI | NULL    |       |
+| tipoCategoria | varchar(145) | NO   |     | NULL    |       |
+| hora          | time         | NO   |     | NULL    |       |
+| fecha         | date         | NO   |     | NULL    |       |
+| apartament    | int(11)      | NO   | MUL | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+5 rows in set (0.011 sec)
+
+MariaDB [sets]> describe zonascomunes;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| idZonasComunes | int(11)      | NO   | PRI | NULL    |       |
+| tipoZonacomun  | varchar(145) | NO   |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+2 rows in set (0.011 sec)
+
+MariaDB [sets]> describe agendar_zona;
++--------+---------+------+-----+---------+-------+
+| Field  | Type    | Null | Key | Default | Extra |
++--------+---------+------+-----+---------+-------+
+| agenda | int(11) | NO   |     | NULL    |       |
+| zona   | int(11) | NO   |     | NULL    |       |
++--------+---------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> ALTER TABLE agendar_zona ADD FOREIGN KEY (agenda) REFERENCES agendar(idAgendar);
+Query OK, 0 rows affected (0.045 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> ALTER TABLE agendar_zona ADD FOREIGN KEY (zona) REFERENCES zonascomunes(idZona);
+ERROR 1005 (HY000): Can't create table `sets`.`agendar_zona` (errno: 150 "Foreign key constraint is incorrectly formed")
+MariaDB [sets]> ALTER TABLE agendar_zona ADD FOREIGN KEY (zona) REFERENCES zonascomunes(idZonasComunes);
+Query OK, 0 rows affected (0.043 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> ALTER TABLE `anuncio` DROP `registro`;
+ERROR 1828 (HY000): Cannot drop column 'registro': needed in a foreign key constraint 'sets/FKidRol'
+MariaDB [sets]> ALTER TABLE `registro` DROP `idRol`;
+ERROR 1829 (HY000): Cannot drop column 'idRol': needed in a foreign key constraint 'FKidRol' of table `sets`.`anuncio`
+MariaDB [sets]> SHOW CREATE TABLE anuncio;
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+
+
+            |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| anuncio | CREATE TABLE `anuncio` (
+  `idAnuncios` int(11) NOT NULL,
+  `nombre` varchar(140) NOT NULL,
+  `correo` varchar(145) NOT NULL,
+  `hora` time NOT NULL,
+  `fecha` date NOT NULL,
+  `imagenes` varchar(145) DEFAULT NULL,
+  `descripcion` varchar(145) NOT NULL,
+  `registro` int(11) NOT NULL,
+  PRIMARY KEY (`idAnuncios`),
+  CONSTRAINT `FKidRol` FOREIGN KEY (`registro`) REFERENCES `registro` (`idRol`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.001 sec)
+
+MariaDB [sets]> SHOW CREATE TABLE registro;
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table
+
+
+                                                                      |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| registro | CREATE TABLE `registro` (
+  `idRol` int(11) NOT NULL,
+  `tipoDocumento` varchar(45) NOT NULL,
+  `numeroDocumento` int(11) NOT NULL,
+  `nombre` varchar(145) NOT NULL,
+  `apellido` varchar(145) NOT NULL,
+  `torre` int(11) NOT NULL,
+  `piso` int(11) NOT NULL,
+  `apartamento` int(11) NOT NULL,
+  `correo` varchar(145) NOT NULL,
+  `celular` int(11) NOT NULL,
+  `usuario` varchar(100) NOT NULL,
+  `contraseña` varchar(100) NOT NULL,
+  PRIMARY KEY (`idRol`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.001 sec)
+
+MariaDB [sets]> ALTER TABLE anuncio DROP FOREIGN KEY FKidRol;
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> ALTER TABLE anuncio DROP COLUMN registro;
+Query OK, 0 rows affected (0.014 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> ALTER TABLE registro DROP COLUMN idRol;
+ERROR 1829 (HY000): Cannot drop column 'idRol': needed in a foreign key constraint 'registro_torre_ibfk_1' of table `sets`.`registro_torre`
+MariaDB [sets]> ALTER TABLE `registro_torre` DROP `idRol`;
+ERROR 1828 (HY000): Cannot drop column 'idRol': needed in a foreign key constraint 'sets/registro_torre_ibfk_1'
+MariaDB [sets]> SHOW CREATE TABLE registro_torre;
++----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table          | Create Table
+
+                                                                       |
++----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| registro_torre | CREATE TABLE `registro_torre` (
+  `idRol` int(11) NOT NULL,
+  `idTorre` int(11) NOT NULL,
+  KEY `FKidTorre` (`idTorre`),
+  CONSTRAINT `FKidTorre` FOREIGN KEY (`idTorre`) REFERENCES `torre` (`idTorre`),
+  CONSTRAINT `registro_torre_ibfk_1` FOREIGN KEY (`idRol`) REFERENCES `registro` (`idRol`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [sets]> SHOW CREATE TABLE registro;
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table
+
+
+                                                                      |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| registro | CREATE TABLE `registro` (
+  `idRol` int(11) NOT NULL,
+  `tipoDocumento` varchar(45) NOT NULL,
+  `numeroDocumento` int(11) NOT NULL,
+  `nombre` varchar(145) NOT NULL,
+  `apellido` varchar(145) NOT NULL,
+  `torre` int(11) NOT NULL,
+  `piso` int(11) NOT NULL,
+  `apartamento` int(11) NOT NULL,
+  `correo` varchar(145) NOT NULL,
+  `celular` int(11) NOT NULL,
+  `usuario` varchar(100) NOT NULL,
+  `contraseña` varchar(100) NOT NULL,
+  PRIMARY KEY (`idRol`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [sets]> ALTER TABLE registro_torre DROP FOREIGN KEY registro_torre_ibfk_1;
+Query OK, 0 rows affected (0.009 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> ALTER TABLE registro_torre DROP COLUMN idRol;
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> ALTER TABLE registro DROP COLUMN idRol;
+Query OK, 0 rows affected (0.052 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> describe registro;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| idRol           | varchar(150) | NO   | PRI | NULL    |       |
+| tipoDocumento   | varchar(45)  | NO   |     | NULL    |       |
+| numeroDocumento | int(11)      | NO   |     | NULL    |       |
+| nombre          | varchar(145) | NO   |     | NULL    |       |
+| apellido        | varchar(145) | NO   |     | NULL    |       |
+| torre           | int(11)      | NO   |     | NULL    |       |
+| piso            | int(11)      | NO   |     | NULL    |       |
+| apartamento     | int(11)      | NO   |     | NULL    |       |
+| correo          | varchar(145) | NO   |     | NULL    |       |
+| celular         | int(11)      | NO   |     | NULL    |       |
+| usuario         | varchar(100) | NO   |     | NULL    |       |
+| contraseña      | varchar(100) | NO   |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+12 rows in set (0.012 sec)
+
+MariaDB [sets]> describe anuncio;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| idAnuncios  | int(11)      | NO   | PRI | NULL    |       |
+| nombre      | varchar(140) | NO   |     | NULL    |       |
+| correo      | varchar(145) | NO   |     | NULL    |       |
+| hora        | time         | NO   |     | NULL    |       |
+| fecha       | date         | NO   |     | NULL    |       |
+| imagenes    | varchar(145) | YES  |     | NULL    |       |
+| descripcion | varchar(145) | NO   |     | NULL    |       |
+| registro    | varchar(11)  | NO   |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+8 rows in set (0.011 sec)
+
+MariaDB [sets]> ALTER TABLE anuncio ADD FOREIGN KEY (registro) REFERENCES registro(idRol);
+Query OK, 0 rows affected (0.048 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> describe registro;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| idRol           | varchar(150) | NO   | PRI | NULL    |       |
+| tipoDocumento   | varchar(45)  | NO   |     | NULL    |       |
+| numeroDocumento | int(11)      | NO   |     | NULL    |       |
+| nombre          | varchar(145) | NO   |     | NULL    |       |
+| apellido        | varchar(145) | NO   |     | NULL    |       |
+| torre           | int(11)      | NO   |     | NULL    |       |
+| piso            | int(11)      | NO   |     | NULL    |       |
+| apartamento     | int(11)      | NO   |     | NULL    |       |
+| correo          | varchar(145) | NO   |     | NULL    |       |
+| celular         | int(11)      | NO   |     | NULL    |       |
+| usuario         | varchar(100) | NO   |     | NULL    |       |
+| contraseña      | varchar(100) | NO   |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+12 rows in set (0.012 sec)
+
+MariaDB [sets]> describe torre;
++-------------+---------+------+-----+---------+-------+
+| Field       | Type    | Null | Key | Default | Extra |
++-------------+---------+------+-----+---------+-------+
+| idTorre     | int(11) | NO   | PRI | NULL    |       |
+| nombreTorre | int(11) | NO   |     | NULL    |       |
++-------------+---------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> ALTER TABLE registro_torre ADD FOREIGN KEY (idRol) REFERENCES registro(idRol);
+Query OK, 0 rows affected (0.052 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]> INSERT INTO `registro` (`idRol`, `tipoDocumento`, `numeroDocumento`, `nombre`, `apellido`, `torre`, `piso`, `apartamento`, `correo`, `celular`, `usuario`, `contraseña`) VALUES ('residente', 'cedula', '345446667', 'cristiano', 'ronaldo', '2', '2', '202', 'cr7@gmail.com', '325564655', 'cr7sd', 'cristiano354')
+    -> ;
+ERROR 1062 (23000): Duplicate entry 'residente' for key 'PRIMARY'
+MariaDB [sets]> ALTER TABLE registro DROP PRIMARY KEY, ADD PRIMARY KEY (otro_campo);
+ERROR 1072 (42000): Key column 'otro_campo' doesn't exist in table
+MariaDB [sets]> ALTER TABLE registro DROP INDEX idRol;
+ERROR 1091 (42000): Can't DROP INDEX `idRol`; check that it exists
+MariaDB [sets]> ALTER TABLE registro DROP INDEX idRol;
+ERROR 1091 (42000): Can't DROP INDEX `idRol`; check that it exists
+MariaDB [sets]> SHOW CREATE TABLE registro;
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table
+
+
+                                                                           |
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| registro | CREATE TABLE `registro` (
+  `idRol` varchar(150) NOT NULL,
+  `tipoDocumento` varchar(45) NOT NULL,
+  `numeroDocumento` int(11) NOT NULL,
+  `nombre` varchar(145) NOT NULL,
+  `apellido` varchar(145) NOT NULL,
+  `torre` int(11) NOT NULL,
+  `piso` int(11) NOT NULL,
+  `apartamento` int(11) NOT NULL,
+  `correo` varchar(145) NOT NULL,
+  `celular` int(11) NOT NULL,
+  `usuario` varchar(100) NOT NULL,
+  `contraseña` varchar(100) NOT NULL,
+  PRIMARY KEY (`idRol`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.001 sec)
+
+MariaDB [sets]> INSERT INTO `registro` (`idRol`, `tipoDocumento`, `numeroDocumento`, `nombre`, `apellido`, `torre`, `piso`, `apartamento`, `correo`, `celular`, `usuario`, `contraseña`)
+    -> VALUES ('residente2', 'cedula', '345446667', 'cristiano', 'ronaldo', '2', '2', '202', 'cr7@gmail.com', '325564655', 'cr7sd', 'cristiano354');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [sets]> INSERT INTO `registro` (`idRol`, `tipoDocumento`, `numeroDocumento`, `nombre`, `apellido`, `torre`, `piso`, `apartamento`, `correo`, `celular`, `usuario`, `contraseña`)
+    -> VALUES ('guarda2', 'cedula', '654323456', 'gerard', 'pique', '2', '5', '501', 'pique@gmail.com', '3109876543', 'pique3', 'gerard2023');
+Query OK, 1 row affected, 1 warning (0.002 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> INSERT INTO `registro` (`idRol`, `tipoDocumento`, `numeroDocumento`, `nombre`, `apellido`, `torre`, `piso`, `apartamento`, `correo`, `celular`, `usuario`, `contraseña`)
+    -> VALUES ('administrador2', 'cedula', '765434567', 'xavi', 'hernandez', '3', '1', '102', 'xavi@gmail.com', '3198765432', 'xavi6', 'xavi2024');
+Query OK, 1 row affected, 1 warning (0.002 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> INSERT INTO `registro` (`idRol`, `tipoDocumento`, `numeroDocumento`, `nombre`, `apellido`, `torre`, `piso`, `apartamento`, `correo`, `celular`, `usuario`, `contraseña`)
+    -> VALUES ('residente4', 'cedula', '876545678', 'luis', 'suarez', '4', '2', '204', 'suarez@gmail.com', '3187654321', 'suarez9', 'luis2024');
+Query OK, 1 row affected, 1 warning (0.001 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> INSERT INTO `registro` (`idRol`, `tipoDocumento`, `numeroDocumento`, `nombre`, `apellido`, `torre`, `piso`, `apartamento`, `correo`, `celular`, `usuario`, `contraseña`)
+    -> VALUES ('guarda3', 'cedula', '987656789', 'sergio', 'ramos', '5', '3', '303', 'ramos@gmail.com', '3176543210', 'ramos4', 'sergio2023');
+Query OK, 1 row affected, 1 warning (0.005 sec)
+
+MariaDB [sets]> INSERT INTO `registro` (`idRol`, `tipoDocumento`, `numeroDocumento`, `nombre`, `apellido`, `torre`, `piso`, `apartamento`, `correo`, `celular`, `usuario`, `contraseña`)
+    -> VALUES ('residente5', 'cedula', '234567890', 'neymar', 'junior', '6', '1', '101', 'neymar@gmail.com', '3165432109', 'neymar11', 'junior2024');
+Query OK, 1 row affected, 1 warning (0.005 sec)
+
+MariaDB [sets]> cccc
+    -> werd,
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'cccc
+werd,' at line 1
+MariaDB [sets]> INSERT INTO `registro_torre` (`idRol`, `idTorre`) VALUES ('residente4', '4'), ('residente5', '6');
+
+INSERT INTO `piso` (`idPiso`, `nombrePiso`) VALUES ('1', 'piso1'), ('2', 'piso 2');
+INSERT INTO `piso` (`idPiso`, `nombrePiso`) VALUES ('3', 'piso 3'), ('4', 'piso 4');
+
+INSERT INTO `torre_piso` (`torre`, `piso`) VALUES ('1', '2'), ('5', '2');
+
+INSERT INTO `torre_piso` (`torre`, `piso`) VALUES ('4', '2'), ('6', '1');
+
+INSERT INTO `apartamento` (`idApartamento`, `nombreApartamento`) VALUES ('210', 'apartamento 210'), ('205', 'apartamento 205')
+
+
+INSERT INTO `piso_apartamento` (`pisos`, `apartament`) VALUES ('1', '102'), ('4', '431');
+
+MariaDB [sets]> INSERT INTO `pagos` (`idPagos`, `tipoNoti`, `valorPago`, `fechaPago`, `apart`)
+    -> VALUES
+    -> (1, 'Pago de renta', 1200000, '2024-08-01 10:00:00', 101),
+    -> (2, 'Pago de servicios', 300000, '2024-08-03 15:30:00', 102),
+    -> (3, 'Pago de mantenimiento', 150000, '2024-08-05 12:45:00', 103),
+    -> (4, 'Pago de administración', 500000, '2024-08-07 09:00:00', 202),
+    -> (5, 'Pago de renta', 1200000, '2024-08-09 14:20:00', 204),
+    -> (6, 'Pago de servicios', 300000, '2024-08-10 08:15:00', 205),
+    -> (7, 'Pago de mantenimiento', 150000, '2024-08-12 11:10:00', 210),
+    -> (8, 'Pago de administración', 500000, '2024-08-13 16:50:00', 303),
+    -> (9, 'Pago de renta', 1200000, '2024-08-15 07:40:00', 431),
+    -> (10, 'Pago de servicios', 300000, '2024-08-17 13:35:00', 501);
+Query OK, 10 rows affected (0.008 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+MariaDB [sets]>INSERT INTO `agendar` (`idAgendar`, `tipoCategoria`, `hora`, `fecha`, `apartament`) VALUES ('4', 'cancha de futbol', '01:00 pm', '2024-09-02', '202'), ('5', 'cancha de voley', '10:00 pm', '2024-08-31', '204');
+INSERT INTO `zonascomunes` (`idZonasComunes`, `tipoZonacomun`) VALUES ('1', 'CANCHA DE FUTBOL'), ('2', 'ZONA DE BBQ');
+
+
+INSERT INTO `agendar_zona` (`agenda`, `zona`) VALUES ('1', '1'), ('2', '1');
+
+INSERT INTO `parqueadero` 
+(`idSolicitud`, `numeroParqueadero`, `placaVehiculo`, `modeloVehiculo`, `piso`, `torre`, `nombreSolicitante`, `documentoSolicitante`) 
+VALUES
+(1, 101, 'ABC123', 'Toyota Corolla', 1, 1, 'Lionel Messi', 2432546),
+(2, 102, 'XYZ789', 'Honda Civic', 2, 2, 'Cristiano Ronaldo', 345446667),
+(3, 103, 'LMN456', 'Ford Focus', 1, 3, 'Neymar Junior', 234567890),
+(4, 104, 'DEF321', 'Chevrolet Malibu', 3, 4, 'Luis Suarez', 876545678),
+(5, 105, 'GHI654', 'Hyundai Elantra', 2, 5, 'Marco Pantani', 6787898),
+(6, 106, 'JKL987', 'Kia Sportage', 4, 1, 'Andres Iniesta', 32456765),
+(7, 107, 'MNO123', 'Mazda 3', 1, 2, 'Gerard Pique', 654323456),
+(8, 108, 'PQR456', 'Subaru Outback', 3, 3, 'Sergio Ramos', 987656789),
+(9, 109, 'STU789', 'Volkswagen Jetta', 2, 4, 'Xavi Hernandez', 765434567),
+(10, 110, 'VWX012', 'BMW X5', 5, 5, 'Santiago Buitrago', 4233566);
+
+INSERT INTO `apartamento_parqueadero` (`apartamen`, `parking`) VALUES ('101', '1'), ('202', '2');
+
+INSERT INTO `anuncio` (`idAnuncios`, `nombre`, `correo`, `hora`, `fecha`, `imagenes`, `descripcion`, `registro`) VALUES ('1', 'Oferta Especial', 'ofertas@example.com', '10:00:00', '2024-08-20', 'oferta1.jpg', 'Gran descuento en productos seleccionados', 'residente1');
+
+
+MariaDB [sets]> CREATE VIEW vista_anuncios AS
+    -> SELECT idAnuncios AS 'ID de Anuncio', nombre AS 'Nombre del Anuncio', correo AS 'Correo de Contacto', hora AS 'Hora de Publicación', fecha AS 'Fecha de Publicación', imagenes AS 'Imagen del Anuncio', descripcion AS 'Descripción', registro AS 'Registro Asociado'
+    -> FROM anuncio;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]> CREATE VIEW vista_agendas_detalle AS
+    -> SELECT idAgendar AS 'ID de Agendamiento', tipoCategoria AS 'Categoría de Evento', hora AS 'Hora', fecha AS 'Fecha', apartament AS 'ID de Apartamento'
+    -> FROM agendar;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [sets]> CREATE VIEW vista_agendas_zonas AS
+    -> SELECT agenda AS 'ID de Agenda', zona AS 'ID de Zona'
+    -> FROM agendar_zona;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [sets]> CREATE VIEW vista_anuncios_detalle AS
+    -> SELECT idAnuncios AS 'ID de Anuncio', nombre AS 'Nombre del Anuncio', correo AS 'Correo de Contacto', hora AS 'Hora de Publicación', fecha AS 'Fecha de Publicación',  descripcion AS 'Descripción', registro AS 'ID de Registro'
+    -> FROM anuncio;
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> CREATE VIEW vista_apartamentos_info AS
+    -> SELECT idApartamento AS 'ID de Apartamento', nombreApartamento AS 'Nombre del Apartamento'
+    -> FROM apartamento;
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [sets]> CREATE VIEW vista_apartamento_parqueadero_relacion AS
+    -> SELECT apartamen AS 'ID de Apartamento', parking AS 'ID de Parqueadero'
+    -> FROM apartamento_parqueadero;
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]> CREATE VIEW vista_parqueaderos_info AS
+    -> SELECT idSolicitud AS 'ID de Solicitud', numeroParqueadero AS 'Número de Parqueadero', placaVehiculo AS 'Placa del Vehículo',  torre AS 'Torre', nombreSolicitante AS 'Nombre del Solicitante', documentoSolicitante AS 'Documento de
+l Solicitante'
+    -> FROM parqueadero;
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> CREATE VIEW vista_pagos_detalle AS
+    -> SELECT idPagos AS 'ID de Pago', tipoNoti AS 'Tipo de Notificación', valorPago AS 'Valor', fechaPago AS 'Fecha de Pago', apart AS 'ID de Apartamento'
+    -> FROM pagos;
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> CREATE VIEW vista_pagos_detalle AS
+    -> SELECT idPagos AS 'ID de Pago', tipoNoti AS 'Tipo de Notificación', valorPago AS 'Valor', apart AS 'ID de Apartamento', fechaPago AS 'Fecha de Pago',
+    -> FROM pagos;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM pagos' at line 3
+MariaDB [sets]> CREATE VIEW vista_pagos_detalle AS
+    -> SELECT idPagos AS 'ID de Pago', tipoNoti AS 'Tipo de Notificación', valorPago AS 'Valor', apart AS 'ID de Apartamento', fechaPago AS 'Fecha de Pago'
+    -> FROM pagos;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [sets]> CREATE VIEW vista_pisos_info AS
+    -> SELECT idPiso AS 'ID de Piso', nombrePiso AS 'Nombre del Piso'
+    -> FROM piso;
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]> CREATE VIEW vista_pisos_apartamentos AS
+    -> SELECT pisos AS 'ID de Piso', apartament AS 'ID de Apartamento'
+    -> FROM piso_apartamento;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [sets]> CREATE VIEW vista_citas_programadas_detalle AS
+    -> SELECT idCita AS 'ID de Cita', tipoCita AS 'Tipo de Cita', torre AS 'ID de Torre', aparta AS 'ID de Apartamento Relacionado',  nombre_completo AS 'Nombre Completo', numeroDocumento AS 'Número de Documento', celular AS 'Número de
+Celular', correo AS 'Correo Electrónico', hora AS 'Hora', fecha AS 'Fecha'
+    -> FROM programar_cita;
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]> CREATE VIEW vista_registro_detalle AS
+    -> SELECT idRol AS 'ID de Rol', tipoDocumento AS 'Tipo de Documento', numeroDocumento AS 'Número de Documento', nombre AS 'Nombre', apellido AS 'Apellido', torre AS 'ID de Torre', piso AS 'ID de Piso', apartamento AS 'ID de Apartamento', correo AS 'Correo Electrónico', celular AS 'Número de Celular', usuario AS 'Nombre de Usuario'
+    -> FROM registro;
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> CREATE VIEW vista_registro_torres_relacion AS
+    -> SELECT idRol AS 'ID de Rol', idTorre AS 'ID de Torre'
+    -> FROM registro_torre;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [sets]> CREATE VIEW vista_torres_info AS
+    -> SELECT idTorre AS 'ID de Torre', nombreTorre AS 'Nombre de Torre'
+    -> FROM torre;
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]> CREATE VIEW vista_torre_pisos_relacion AS
+    -> SELECT torre AS 'ID de Torre', piso AS 'ID de Piso'
+    -> FROM torre_piso;
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]> CREATE VIEW vista_zonas_comunes_info AS
+    -> SELECT idZonasComunes AS 'ID de Zona Común', tipoZonacomun AS 'Tipo de Zona Común'
+    -> FROM zonascomunes;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [sets]>Microsoft Windows [Versión 10.0.22631.4037]
+(c) Microsoft Corporation. Todos los derechos reservados.
+
+C:\Users\apira>cd,,
+C:\Users\apira
+
+C:\Users\apira>cd...
+
+C:\Users\apira>cd..
+
+C:\Users>cd..
+
+C:\>cd C:\xampp\mysql\bin
+
+C:\xampp\mysql\bin>mysql -u root -h localhost -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 42
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| sets               |
+| test               |
++--------------------+
+6 rows in set (0.002 sec)
+
+MariaDB [(none)]> use sets;
+Database changed
+MariaDB [sets]> show tables;
++----------------------------------------+
+| Tables_in_sets                         |
++----------------------------------------+
+| agendar                                |
+| agendar_zona                           |
+| anuncio                                |
+| apartamento                            |
+| apartamento_parqueadero                |
+| pagos                                  |
+| parqueadero                            |
+| piso                                   |
+| piso_apartamento                       |
+| programar_cita                         |
+| registro                               |
+| registro_torre                         |
+| torre                                  |
+| torre_piso                             |
+| vista_agendas_detalle                  |
+| vista_agendas_zonas                    |
+| vista_anuncios_detalle                 |
+| vista_apartamento_parqueadero_relacion |
+| vista_apartamentos_info                |
+| vista_citas_programadas_detalle        |
+| vista_pagos_detalle                    |
+| vista_parqueaderos_info                |
+| vista_pisos_apartamentos               |
+| vista_pisos_info                       |
+| vista_registro_detalle                 |
+| vista_registro_torres_relacion         |
+| vista_torre_pisos_relacion             |
+| vista_torres_info                      |
+| vista_zonas_comunes_info               |
+| zonascomunes                           |
++----------------------------------------+
+30 rows in set (0.002 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE eliminar_pagos(IN p_idPagos INT)
+    -> BEGIN
+    ->     DELETE FROM pagos WHERE idPagos = p_idPagos;
+    -> END //
+ERROR 1304 (42000): PROCEDURE eliminar_pagos already exists
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE editar_pagos(
+    ->     IN p_idPagos INT,
+    ->     IN p_tipoNoti VARCHAR(145),
+    ->     IN p_valorPago DECIMAL(10, 2),
+    ->     IN p_apart INT,
+    ->     IN p_fechaPago DATE
+    -> )
+    -> BEGIN
+    ->     UPDATE pagos
+    ->     SET tipoNoti = p_tipoNoti, valorPago = p_valorPago, apart = p_apart, fechaPago = p_fechaPago
+    ->     WHERE idPagos = p_idPagos;
+    -> END //
+ERROR 1304 (42000): PROCEDURE editar_pagos already exists
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE agregar_pagos(
+    ->     IN p_idPagos INT,
+    ->     IN p_tipoNoti VARCHAR(145),
+    ->     IN p_valorPago DECIMAL(10, 2),
+    ->     IN p_apart INT,
+    ->     IN p_fechaPago DATE
+    -> )
+    -> BEGIN
+    ->     INSERT INTO pagos (idPagos, tipoNoti, valorPago, apart, fechaPago)
+    ->     VALUES (p_idPagos, p_tipoNoti, p_valorPago, p_apart, p_fechaPago);
+    -> END //
+ERROR 1304 (42000): PROCEDURE agregar_pagos already exists
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE consultar_pagos(IN p_idPagos INT, OUT p_tipoNoti VARCHAR(145), OUT p_valorPago DECIMAL(10, 2), OUT p_apart INT, OUT p_fechaPago DATE)
+    -> BEGIN
+    ->     SELECT tipoNoti, valorPago, apart, fechaPago
+    ->     INTO p_tipoNoti, p_valorPago, p_apart, p_fechaPago
+    ->     FROM pagos
+    ->     WHERE idPagos = p_idPagos;
+    -> END //
+ERROR 1304 (42000): PROCEDURE consultar_pagos already exists
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE eliminar_piso(IN p_idPiso INT)
+    -> BEGIN
+    ->     DELETE FROM piso WHERE idPiso = p_idPiso;
+    -> END //
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE editar_piso(
+    ->     IN p_idPiso INT,
+    ->     IN p_numeroPiso INT
+    -> )
+    -> BEGIN
+    ->     UPDATE piso
+    ->     SET numeroPiso = p_numeroPiso
+    ->     WHERE idPiso = p_idPiso;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE agregar_piso(
+    ->     IN p_idPiso INT,
+    ->     IN p_numeroPiso INT
+    -> )
+    -> BEGIN
+    ->     INSERT INTO piso (idPiso, numeroPiso)
+    ->     VALUES (p_idPiso, p_numeroPiso);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE consultar_piso(IN p_idPiso INT, OUT p_numeroPiso INT)
+    -> BEGIN
+    ->     SELECT numeroPiso
+    ->     INTO p_numeroPiso
+    ->     FROM piso
+    ->     WHERE idPiso = p_idPiso;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE eliminar_piso_apartamento(IN p_idPiso INT, IN p_idApartamento INT)
+    -> BEGIN
+    ->     DELETE FROM piso_apartamento WHERE idPiso = p_idPiso AND idApartamento = p_idApartamento;
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE editar_piso_apartamento(
+    ->     IN p_idPiso INT,
+    ->     IN p_idApartamento INT
+    -> )
+    -> BEGIN
+    ->     UPDATE piso_apartamento
+    ->     SET idPiso = p_idPiso, idApartamento = p_idApartamento
+    ->     WHERE idPiso = p_idPiso AND idApartamento = p_idApartamento;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE agregar_piso_apartamento(
+    ->     IN p_idPiso INT,
+    ->     IN p_idApartamento INT
+    -> )
+    -> BEGIN
+    ->     INSERT INTO piso_apartamento (idPiso, idApartamento)
+    ->     VALUES (p_idPiso, p_idApartamento);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE consultar_piso_apartamento(IN p_idPiso INT, OUT p_idApartamento INT)
+    -> BEGIN
+    ->     SELECT idApartamento
+    ->     INTO p_idApartamento
+    ->     FROM piso_apartamento
+    ->     WHERE idPiso = p_idPiso;
+    -> END //
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> show tables;
++----------------------------------------+
+| Tables_in_sets                         |
++----------------------------------------+
+| agendar                                |
+| agendar_zona                           |
+| anuncio                                |
+| apartamento                            |
+| apartamento_parqueadero                |
+| pagos                                  |
+| parqueadero                            |
+| piso                                   |
+| piso_apartamento                       |
+| programar_cita                         |
+| registro                               |
+| registro_torre                         |
+| torre                                  |
+| torre_piso                             |
+| vista_agendas_detalle                  |
+| vista_agendas_zonas                    |
+| vista_anuncios_detalle                 |
+| vista_apartamento_parqueadero_relacion |
+| vista_apartamentos_info                |
+| vista_citas_programadas_detalle        |
+| vista_pagos_detalle                    |
+| vista_parqueaderos_info                |
+| vista_pisos_apartamentos               |
+| vista_pisos_info                       |
+| vista_registro_detalle                 |
+| vista_registro_torres_relacion         |
+| vista_torre_pisos_relacion             |
+| vista_torres_info                      |
+| vista_zonas_comunes_info               |
+| zonascomunes                           |
++----------------------------------------+
+30 rows in set (0.002 sec)
+
+MariaDB [sets]> describe agendar;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| idAgendar     | int(11)      | NO   | PRI | NULL    |       |
+| tipoCategoria | varchar(145) | NO   |     | NULL    |       |
+| hora          | time         | NO   |     | NULL    |       |
+| fecha         | date         | NO   |     | NULL    |       |
+| apartament    | int(11)      | NO   | MUL | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+5 rows in set (0.008 sec)
+
+MariaDB [sets]> describe agendar_zona;
++--------+---------+------+-----+---------+-------+
+| Field  | Type    | Null | Key | Default | Extra |
++--------+---------+------+-----+---------+-------+
+| agenda | int(11) | NO   | MUL | NULL    |       |
+| zona   | int(11) | NO   | MUL | NULL    |       |
++--------+---------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> describe anuncio;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| idAnuncios  | int(11)      | NO   | PRI | NULL    |       |
+| nombre      | varchar(140) | NO   |     | NULL    |       |
+| correo      | varchar(145) | NO   |     | NULL    |       |
+| hora        | time         | NO   |     | NULL    |       |
+| fecha       | date         | NO   |     | NULL    |       |
+| imagenes    | varchar(145) | YES  |     | NULL    |       |
+| descripcion | varchar(145) | NO   |     | NULL    |       |
+| registro    | varchar(11)  | NO   | MUL | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+8 rows in set (0.021 sec)
+
+MariaDB [sets]> describe apartamento;
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| idApartamento     | int(11)      | NO   | PRI | NULL    |       |
+| nombreApartamento | varchar(145) | NO   |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+2 rows in set (0.011 sec)
+
+MariaDB [sets]> describe apartamento_parqueadero;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| apartamen | int(11) | NO   | MUL | NULL    |       |
+| parking   | int(11) | NO   | MUL | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+2 rows in set (0.033 sec)
+
+MariaDB [sets]> describe pagos;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| idPagos   | int(11)      | NO   | PRI | NULL    |       |
+| tipoNoti  | varchar(145) | NO   |     | NULL    |       |
+| valorPago | int(11)      | NO   |     | NULL    |       |
+| fechaPago | datetime     | NO   |     | NULL    |       |
+| apart     | int(11)      | NO   | MUL | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+5 rows in set (0.013 sec)
+
+MariaDB [sets]> describe parqueadero;
++----------------------+--------------+------+-----+---------+-------+
+| Field                | Type         | Null | Key | Default | Extra |
++----------------------+--------------+------+-----+---------+-------+
+| idSolicitud          | int(11)      | NO   | PRI | NULL    |       |
+| numeroParqueadero    | int(11)      | NO   |     | NULL    |       |
+| placaVehiculo        | varchar(140) | NO   |     | NULL    |       |
+| modeloVehiculo       | varchar(145) | NO   |     | NULL    |       |
+| piso                 | int(11)      | NO   |     | NULL    |       |
+| torre                | int(11)      | NO   |     | NULL    |       |
+| nombreSolicitante    | varchar(145) | NO   |     | NULL    |       |
+| documentoSolicitante | int(11)      | NO   |     | NULL    |       |
++----------------------+--------------+------+-----+---------+-------+
+8 rows in set (0.014 sec)
+
+MariaDB [sets]> describe piso;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| idPiso     | int(11)      | NO   | PRI | NULL    |       |
+| nombrePiso | varchar(140) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+2 rows in set (0.011 sec)
+
+MariaDB [sets]> describe piso_apartamento;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| pisos      | int(11) | NO   | MUL | NULL    |       |
+| apartament | int(11) | NO   | MUL | NULL    |       |
++------------+---------+------+-----+---------+-------+
+2 rows in set (0.013 sec)
+
+MariaDB [sets]> describe programar_cita;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| idCita          | int(11)      | NO   | PRI | NULL    |       |
+| tipoCita        | varchar(145) | NO   |     | NULL    |       |
+| torre           | int(11)      | NO   |     | NULL    |       |
+| piso            | int(11)      | NO   |     | NULL    |       |
+| nombre_completo | varchar(145) | NO   |     | NULL    |       |
+| numeroDocumento | int(11)      | NO   |     | NULL    |       |
+| celular         | int(11)      | NO   |     | NULL    |       |
+| correo          | varchar(145) | NO   |     | NULL    |       |
+| hora            | time         | NO   |     | NULL    |       |
+| fecha           | date         | NO   |     | NULL    |       |
+| aparta          | int(11)      | NO   | MUL | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+11 rows in set (0.013 sec)
+
+MariaDB [sets]> describe registro;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| idRol           | varchar(150) | NO   | PRI | NULL    |       |
+| tipoDocumento   | varchar(45)  | NO   |     | NULL    |       |
+| numeroDocumento | int(11)      | NO   |     | NULL    |       |
+| nombre          | varchar(145) | NO   |     | NULL    |       |
+| apellido        | varchar(145) | NO   |     | NULL    |       |
+| torre           | int(11)      | NO   |     | NULL    |       |
+| piso            | int(11)      | NO   |     | NULL    |       |
+| apartamento     | int(11)      | NO   |     | NULL    |       |
+| correo          | varchar(145) | NO   |     | NULL    |       |
+| celular         | int(16)      | NO   |     | NULL    |       |
+| usuario         | varchar(100) | NO   |     | NULL    |       |
+| contraseña      | varchar(100) | NO   |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+12 rows in set (0.012 sec)
+
+MariaDB [sets]> describe registro_torre;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| idRol   | varchar(150) | NO   | MUL | NULL    |       |
+| idTorre | int(11)      | NO   | MUL | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+2 rows in set (0.009 sec)
+
+MariaDB [sets]> describe rtorre;
+ERROR 1146 (42S02): Table 'sets.rtorre' doesn't exist
+MariaDB [sets]> describe torre;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| idTorre     | int(11)      | NO   | PRI | NULL    |       |
+| nombreTorre | varchar(110) | NO   |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> describe torre_piso;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| torre | int(11) | NO   | MUL | NULL    |       |
+| piso  | int(11) | NO   | MUL | NULL    |       |
++-------+---------+------+-----+---------+-------+
+2 rows in set (0.013 sec)
+
+MariaDB [sets]> describe zonascomunes;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| idZonasComunes | int(11)      | NO   | PRI | NULL    |       |
+| tipoZonacomun  | varchar(145) | NO   |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EliminarAgendar(IN id INT)
+    -> BEGIN
+    ->     DELETE FROM agendar WHERE idAgendar = id;
+    -> END //
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EditarAgendar(
+    ->     IN id INT,
+    ->     IN tipoCat VARCHAR(145),
+    ->     IN horaAg TIME,
+    ->     IN fechaAg DATE,
+    ->     IN apart INT)
+    -> BEGIN
+    ->     UPDATE agendar
+    ->     SET tipoCategoria = tipoCat, hora = horaAg, fecha = fechaAg, apartament = apart
+    ->     WHERE idAgendar = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE AgregarAgendar(
+    ->     IN tipoCat VARCHAR(145),
+    ->     IN horaAg TIME,
+    ->     IN fechaAg DATE,
+    ->     IN apart INT)
+    -> BEGIN
+    ->     INSERT INTO agendar (tipoCategoria, hora, fecha, apartament)
+    ->     VALUES (tipoCat, horaAg, fechaAg, apart);
+    -> END //
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE ConsultarAgendar(
+    ->     IN id INT,
+    ->     OUT tipoCat VARCHAR(145),
+    ->     OUT horaAg TIME,
+    ->     OUT fechaAg DATE,
+    ->     OUT apart INT)
+    -> BEGIN
+    ->     SELECT tipoCategoria, hora, fecha, apartament
+    ->     INTO tipoCat, horaAg, fechaAg, apart
+    ->     FROM agendar
+    ->     WHERE idAgendar = id;
+    -> END //
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EliminarAgendarZona(IN agenda_id INT, IN zona_id INT)
+    -> BEGIN
+    ->     DELETE FROM agendar_zona WHERE agenda = agenda_id AND zona = zona_id;
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EditarAgendarZona(
+    ->     IN agenda_id INT,
+    ->     IN zona_id INT,
+    ->     IN nueva_zona_id INT)
+    -> BEGIN
+    ->     UPDATE agendar_zona
+    ->     SET zona = nueva_zona_id
+    ->     WHERE agenda = agenda_id AND zona = zona_id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE AgregarAgendarZona(
+    ->     IN agenda_id INT,
+    ->     IN zona_id INT)
+    -> BEGIN
+    ->     INSERT INTO agendar_zona (agenda, zona)
+    ->     VALUES (agenda_id, zona_id);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE ConsultarAgendarZona(
+    ->     IN agenda_id INT,
+    ->     OUT zona_id INT)
+    -> BEGIN
+    ->     SELECT zona
+    ->     INTO zona_id
+    ->     FROM agendar_zona
+    ->     WHERE agenda = agenda_id;
+    -> END //
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EliminarAnuncio(IN id INT)
+    -> BEGIN
+    ->     DELETE FROM anuncio WHERE idAnuncios = id;
+    -> END //
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EditarAnuncio(
+    ->     IN id INT,
+    ->     IN nom VARCHAR(140),
+    ->     IN email VARCHAR(145),
+    ->     IN horaAn TIME,
+    ->     IN fechaAn DATE,
+    ->     IN img VARCHAR(145),
+    ->     IN desc VARCHAR(145),
+    ->     IN reg VARCHAR(11))
+    -> BEGIN
+    ->     UPDATE anuncio
+    ->     SET nombre = nom, correo = email, hora = horaAn, fecha = fechaAn, imagenes = img, descripcion = desc, registro = reg
+    ->     WHERE idAnuncios = id;
+    -> END //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'desc VARCHAR(145),
+    IN reg VARCHAR(11))
+BEGIN
+    UPDATE anuncio
+    SET...' at line 8
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EditarAnuncio(
+    ->     IN id INT,
+    ->     IN nom VARCHAR(140),
+    ->     IN email VARCHAR(145),
+    ->     IN horaAn TIME,
+    ->     IN fechaAn DATE,
+    ->     IN img VARCHAR(145),
+    ->     IN descripcion VARCHAR(145),
+    ->     IN reg VARCHAR(11))
+    -> BEGIN
+    ->     UPDATE anuncio
+    ->     SET nombre = nom, correo = email, hora = horaAn, fecha = fechaAn, imagenes = img, descripcion = descripcion, registro = reg
+    ->     WHERE idAnuncios = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE AgregarAnuncio(
+    ->     IN nom VARCHAR(140),
+    ->     IN email VARCHAR(145),
+    ->     IN horaAn TIME,
+    ->     IN fechaAn DATE,
+    ->     IN img VARCHAR(145),
+    ->     IN desc VARCHAR(145),
+    ->     IN reg VARCHAR(11))
+    -> BEGIN
+    ->     INSERT INTO anuncio (nombre, correo, hora, fecha, imagenes, descripcion, registro)
+    ->     VALUES (nom, email, horaAn, fechaAn, img, desc, reg);
+    -> END //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'desc VARCHAR(145),
+    IN reg VARCHAR(11))
+BEGIN
+    INSERT INTO anuncio (no...' at line 7
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE AgregarAnuncio(
+    ->     IN nom VARCHAR(140),
+    ->     IN email VARCHAR(145),
+    ->     IN horaAn TIME,
+    ->     IN fechaAn DATE,
+    ->     IN img VARCHAR(145),
+    ->     IN descripcion VARCHAR(145),
+    ->     IN reg VARCHAR(11))
+    -> BEGIN
+    ->     INSERT INTO anuncio (nombre, correo, hora, fecha, imagenes, descripcion, registro)
+    ->     VALUES (nom, email, horaAn, fechaAn, img, descripcion, reg);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE ConsultarAnuncio(
+    ->     IN id INT,
+    ->     OUT nom VARCHAR(140),
+    ->     OUT email VARCHAR(145),
+    ->     OUT horaAn TIME,
+    ->     OUT fechaAn DATE,
+    ->     OUT img VARCHAR(145),
+    ->     OUT desc VARCHAR(145),
+    ->     OUT reg VARCHAR(11))
+    -> BEGIN
+    ->     SELECT nombre, correo, hora, fecha, imagenes, descripcion, registro
+    ->     INTO nom, email, horaAn, fechaAn, img, desc, reg
+    ->     FROM anuncio
+    ->     WHERE idAnuncios = id;
+    -> END //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'desc VARCHAR(145),
+    OUT reg VARCHAR(11))
+BEGIN
+    SELECT nombre, correo,...' at line 8
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarAnuncio(
+    ->     IN id INT,
+    ->     OUT nom VARCHAR(140),
+    ->     OUT email VARCHAR(145),
+    ->     OUT horaAn TIME,
+    ->     OUT fechaAn DATE,
+    ->     OUT img VARCHAR(145),
+    ->     OUT descripcion VARCHAR(145),
+    ->     OUT reg VARCHAR(11))
+    -> BEGIN
+    ->     SELECT nombre, correo, hora, fecha, imagenes, descripcion, registro
+    ->     INTO nom, email, horaAn, fechaAn, img, descripcion, reg
+    ->     FROM anuncio
+    ->     WHERE idAnuncios = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EliminarApartamento(IN id INT)
+    -> BEGIN
+    ->     DELETE FROM apartamento WHERE idApartamento = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EditarApartamento(
+    ->     IN id INT,
+    ->     IN nombre VARCHAR(145))
+    -> BEGIN
+    ->     UPDATE apartamento
+    ->     SET nombreApartamento = nombre
+    ->     WHERE idApartamento = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE AgregarApartamento(
+    ->     IN nombre VARCHAR(145))
+    -> BEGIN
+    ->     INSERT INTO apartamento (nombreApartamento)
+    ->     VALUES (nombre);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE ConsultarApartamento(
+    ->     IN id INT,
+    ->     OUT nombre VARCHAR(145))
+    -> BEGIN
+    ->     SELECT nombreApartamento
+    ->     INTO nombre
+    ->     FROM apartamento
+    ->     WHERE idApartamento = id;
+    -> END //
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EliminarApartamentoParqueadero(IN apart_id INT, IN parking_id INT)
+    -> BEGIN
+    ->     DELETE FROM apartamento_parqueadero WHERE apartamen = apart_id AND parking = parking_id;
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EditarApartamentoParqueadero(
+    ->     IN apart_id INT,
+    ->     IN parking_id INT,
+    ->     IN nuevo_parking_id INT)
+    -> BEGIN
+    ->     UPDATE apartamento_parqueadero
+    ->     SET parking = nuevo_parking_id
+    ->     WHERE apartamen = apart_id AND parking = parking_id;
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE AgregarApartamentoParqueadero(
+    ->     IN apart_id INT,
+    ->     IN parking_id INT)
+    -> BEGIN
+    ->     INSERT INTO apartamento_parqueadero (apartamen, parking)
+    ->     VALUES (apart_id, parking_id);
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE ConsultarApartamentoParqueadero(
+    ->     IN apart_id INT,
+    ->     OUT parking_id INT)
+    -> BEGIN
+    ->     SELECT parking
+    ->     INTO parking_id
+    ->     FROM apartamento_parqueadero
+    ->     WHERE apartamen = apart_id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EliminarPago(IN id INT)
+    -> BEGIN
+    ->     DELETE FROM pagos WHERE idPagos = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EditarPago(
+    ->     IN id INT,
+    ->     IN tipo VARCHAR(145),
+    ->     IN valor INT,
+    ->     IN fecha DATETIME,
+    ->     IN apart INT)
+    -> BEGIN
+    ->     UPDATE pagos
+    ->     SET tipoNoti = tipo, valorPago = valor, fechaPago = fecha, apart = apart
+    ->     WHERE idPagos = id;
+    -> END //
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE AgregarPago(
+    ->     IN tipo VARCHAR(145),
+    ->     IN valor INT,
+    ->     IN fecha DATETIME,
+    ->     IN apart INT)
+    -> BEGIN
+    ->     INSERT INTO pagos (tipoNoti, valorPago, fechaPago, apart)
+    ->     VALUES (tipo, valor, fecha, apart);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE ConsultarPago(
+    ->     IN id INT,
+    ->     OUT tipo VARCHAR(145),
+    ->     OUT valor INT,
+    ->     OUT fecha DATETIME,
+    ->     OUT apart INT)
+    -> BEGIN
+    ->     SELECT tipoNoti, valorPago, fechaPago, apart
+    ->     INTO tipo, valor, fecha, apart
+    ->     FROM pagos
+    ->     WHERE idPagos = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EliminarParqueadero(IN id INT)
+    -> BEGIN
+    ->     DELETE FROM parqueadero WHERE idParqueadero = id;
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EditarParqueadero(
+    ->     IN id INT,
+    ->     IN nombre VARCHAR(145))
+    -> BEGIN
+    ->     UPDATE parqueadero
+    ->     SET nombreParqueadero = nombre
+    ->     WHERE idParqueadero = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE AgregarParqueadero(
+    ->     IN nombre VARCHAR(145))
+    -> BEGIN
+    ->     INSERT INTO parqueadero (nombreParqueadero)
+    ->     VALUES (nombre);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE ConsultarParqueadero(
+    ->     IN id INT,
+    ->     OUT nombre VARCHAR(145))
+    -> BEGIN
+    ->     SELECT nombreParqueadero
+    ->     INTO nombre
+    ->     FROM parqueadero
+    ->     WHERE idParqueadero = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarParqueadero(
+    ->     IN id INT,
+    ->     OUT nombreParqueadero VARCHAR(145))
+    -> BEGIN
+    ->     SELECT nombreParqueadero
+    ->     INTO nombreParqueadero
+    ->     FROM parqueadero
+    ->     WHERE idSolicitud = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> cBye
+
+C:\xampp\mysql\bin>mysql -u root -h localhost -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 479
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases,
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| sets               |
+| test               |
++--------------------+
+6 rows in set (0.002 sec)
+
+MariaDB [(none)]> use sets;
+Database changed
+MariaDB [sets]> describe parqueadero;
++----------------------+--------------+------+-----+---------+-------+
+| Field                | Type         | Null | Key | Default | Extra |
++----------------------+--------------+------+-----+---------+-------+
+| idSolicitud          | int(11)      | NO   | PRI | NULL    |       |
+| numeroParqueadero    | int(11)      | NO   |     | NULL    |       |
+| placaVehiculo        | varchar(140) | NO   |     | NULL    |       |
+| modeloVehiculo       | varchar(145) | NO   |     | NULL    |       |
+| piso                 | int(11)      | NO   |     | NULL    |       |
+| torre                | int(11)      | NO   |     | NULL    |       |
+| nombreSolicitante    | varchar(145) | NO   |     | NULL    |       |
+| documentoSolicitante | int(11)      | NO   |     | NULL    |       |
++----------------------+--------------+------+-----+---------+-------+
+8 rows in set (0.012 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarParqueadero(
+    ->     IN id INT,
+    ->     OUT numeroParqueadero INT)
+    -> BEGIN
+    ->     SELECT numeroParqueadero
+    ->     INTO numeroParqueadero
+    ->     FROM parqueadero
+    ->     WHERE idSolicitud = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarParqueadero(
+    ->     IN id INT,
+    ->     OUT numeroParqueadero INT,
+    ->     OUT placaVehiculo VARCHAR(140),
+    ->     OUT modeloVehiculo VARCHAR(145),
+    ->     OUT piso INT,
+    ->     OUT torre INT,
+    ->     OUT nombreSolicitante VARCHAR(145),
+    ->     OUT documentoSolicitante INT)
+    -> BEGIN
+    ->     SELECT numeroParqueadero, placaVehiculo, modeloVehiculo, piso, torre, nombreSolicitante, documentoSolicitante
+    ->     INTO numeroParqueadero, placaVehiculo, modeloVehiculo, piso, torre, nombreSolicitante, documentoSolicitante
+    ->     FROM parqueadero
+    ->     WHERE idSolicitud = id;
+    -> END //
+Query OK, 0 rows affected (0.009 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarParqueadero(
+    ->     IN id INT,
+    ->     OUT numeroParqueadero INT,
+    ->     OUT placaVehiculo VARCHAR(140),
+    ->     OUT modeloVehiculo VARCHAR(145),
+    ->     OUT piso INT,
+    ->     OUT torre INT,
+    ->     OUT nombreSolicitante VARCHAR(145),
+    ->     OUT documentoSolicitante INT)
+    -> BEGIN
+    ->     SELECT numeroParqueadero, placaVehiculo, modeloVehiculo, piso, torre, nombreSolicitante, documentoSolicitante
+    ->     INTO numeroParqueadero, placaVehiculo, modeloVehiculo, piso, torre, nombreSolicitante, documentoSolicitante
+    ->     FROM parqueadero
+    ->     WHERE idSolicitud = id;
+    -> END //
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> SELECT * FROM parqueadero WHERE idSolicitud = 2;
++-------------+-------------------+---------------+----------------+------+-------+-------------------+----------------------+
+| idSolicitud | numeroParqueadero | placaVehiculo | modeloVehiculo | piso | torre | nombreSolicitante | documentoSolicitante |
++-------------+-------------------+---------------+----------------+------+-------+-------------------+----------------------+
+|           2 |               102 | XYZ789        | Honda Civic    |    2 |     2 | Cristiano Ronaldo |            345446667 |
++-------------+-------------------+---------------+----------------+------+-------+-------------------+----------------------+
+1 row in set (0.001 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EliminarRegistro(IN id INT)
+    -> BEGIN
+    ->     DELETE FROM registro WHERE idRegistro = id;
+    -> END //
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE EditarRegistro(
+    ->     IN id INT,
+    ->     IN idRol INT,
+    ->     IN documento VARCHAR(15),
+    ->     IN nombre VARCHAR(100),
+    ->     IN torre VARCHAR(10),
+    ->     IN piso VARCHAR(10),
+    ->     IN apartamento VARCHAR(10),
+    ->     IN correo VARCHAR(100),
+    ->     IN celular VARCHAR(15),
+    ->     IN usuario VARCHAR(45),
+    ->     IN contraseña VARCHAR(45))
+    -> BEGIN
+    ->     UPDATE registro
+    ->     SET idRol = idRol, documento = documento, nombre = nombre, torre = torre, piso = piso, apartamento = apartamento, correo = correo, celular = celular, usuario = usuario, contraseña = contraseña
+    ->     WHERE idRegistro = id;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE AgregarRegistro(
+    ->     IN idRol INT,
+    ->     IN documento VARCHAR(15),
+    ->     IN nombre VARCHAR(100),
+    ->     IN torre VARCHAR(10),
+    ->     IN piso VARCHAR(10),
+    ->     IN apartamento VARCHAR(10),
+    ->     IN correo VARCHAR(100),
+    ->     IN celular VARCHAR(15),
+    ->     IN usuario VARCHAR(45),
+    ->     IN contraseña VARCHAR(45))
+    -> BEGIN
+    ->     INSERT INTO registro (idRol, documento, nombre, torre, piso, apartamento, correo, celular, usuario, contraseña)
+    ->     VALUES (idRol, documento, nombre, torre, piso, apartamento, correo, celular, usuario, contraseña);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]> CREATE PROCEDURE ConsultarRegistro(
+    ->     IN id INT,
+    ->     OUT idRol INT,
+    ->     OUT documento VARCHAR(15),
+    ->     OUT nombre VARCHAR(100),
+    ->     OUT torre VARCHAR(10),
+    ->     OUT piso VARCHAR(10),
+    ->     OUT apartamento VARCHAR(10),
+    ->     OUT correo VARCHAR(100),
+    ->     OUT celular VARCHAR(15),
+    ->     OUT usuario VARCHAR(45),
+    ->     OUT contraseña VARCHAR(45))
+    -> BEGIN
+    ->     SELECT idRol, documento, nombre, torre, piso, apartamento, correo, celular, usuario, contraseña
+    ->     INTO idRol, documento, nombre, torre, piso, apartamento, correo, celular, usuario, contraseña
+    ->     FROM registro
+    ->     WHERE idRegistro = id;
+    -> END //
+Query OK, 0 rows affected (0.012 sec)
+
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> describe registro;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| idRol           | varchar(150) | NO   | PRI | NULL    |       |
+| tipoDocumento   | varchar(45)  | NO   |     | NULL    |       |
+| numeroDocumento | int(11)      | NO   |     | NULL    |       |
+| nombre          | varchar(145) | NO   |     | NULL    |       |
+| apellido        | varchar(145) | NO   |     | NULL    |       |
+| torre           | int(11)      | NO   |     | NULL    |       |
+| piso            | int(11)      | NO   |     | NULL    |       |
+| apartamento     | int(11)      | NO   |     | NULL    |       |
+| correo          | varchar(145) | NO   |     | NULL    |       |
+| celular         | int(16)      | NO   |     | NULL    |       |
+| usuario         | varchar(100) | NO   |     | NULL    |       |
+| contraseña      | varchar(100) | NO   |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+12 rows in set (0.013 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarRegistro(
+    ->     IN p_idRol VARCHAR(150),
+    ->     OUT p_tipoDocumento VARCHAR(45),
+    ->     OUT p_numeroDocumento INT,
+    ->     OUT p_nombre VARCHAR(145),
+    ->     OUT p_apellido VARCHAR(145),
+    ->     OUT p_torre INT,
+    ->     OUT p_piso INT,
+    ->     OUT p_apartamento INT,
+    ->     OUT p_correo VARCHAR(145),
+    ->     OUT p_celular INT,
+    ->     OUT p_usuario VARCHAR(100),
+    ->     OUT p_contraseña VARCHAR(100))
+    -> BEGIN
+    ->     SELECT tipoDocumento, numeroDocumento, nombre, apellido, torre, piso, apartamento, correo, celular, usuario, contraseña
+    ->     INTO p_tipoDocumento, p_numeroDocumento, p_nombre, p_apellido, p_torre, p_piso, p_apartamento, p_correo, p_celular, p_usuario, p_contraseña
+    ->     FROM registro
+    ->     WHERE idRol = p_idRol;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> SET @p0 = 'residente1';  -- ID de registro
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p1 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p2 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p3 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p4 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p5 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p6 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p7 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p8 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p9 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p10 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> CALL ConsultarRegistro(@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10);
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE sets.ConsultarRegistro; expected 12, got 11
+MariaDB [sets]>
+MariaDB [sets]> SELECT @p1 AS tipoDocumento,
+    ->        @p2 AS numeroDocumento,
+    ->        @p3 AS nombre,
+    ->        @p4 AS apellido,
+    ->        @p5 AS torre,
+    ->        @p6 AS piso,
+    ->        @p7 AS apartamento,
+    ->        @p8 AS correo,
+    ->        @p9 AS celular,
+    ->        @p10 AS usuario,
+    ->        @p11 AS contraseña;
++---------------+-----------------+--------+----------+-------+------+-------------+--------+---------+---------+------------+
+| tipoDocumento | numeroDocumento | nombre | apellido | torre | piso | apartamento | correo | celular | usuario | contraseña |
++---------------+-----------------+--------+----------+-------+------+-------------+--------+---------+---------+------------+
+| NULL          | NULL            | NULL   | NULL     | NULL  | NULL | NULL        | NULL   | NULL    | NULL    | NULL       |
++---------------+-----------------+--------+----------+-------+------+-------------+--------+---------+---------+------------+
+1 row in set (0.000 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarRegistro(
+    ->     IN p_idRol VARCHAR(150),
+    ->     OUT p_tipoDocumento VARCHAR(45),
+    ->     OUT p_numeroDocumento INT,
+    ->     OUT p_nombre VARCHAR(145),
+    ->     OUT p_apellido VARCHAR(145),
+    ->     OUT p_torre INT,
+    ->     OUT p_piso INT,
+    ->     OUT p_apartamento INT,
+    ->     OUT p_correo VARCHAR(145),
+    ->     OUT p_celular INT,
+    ->     OUT p_usuario VARCHAR(100),
+    ->     OUT p_contraseña VARCHAR(100))
+    -> BEGIN
+    ->     SELECT tipoDocumento, numeroDocumento, nombre, apellido, torre, piso, apartamento, correo, celular, usuario, contraseña
+    ->     INTO p_tipoDocumento, p_numeroDocumento, p_nombre, p_apellido, p_torre, p_piso, p_apartamento, p_correo, p_celular, p_usuario, p_contraseña
+    ->     FROM registro
+    ->     WHERE idRol = p_idRol;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> SET @p0 = 'residente1';  -- Usa un idRol válido
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p1 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p2 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p3 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p4 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p5 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p6 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p7 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p8 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p9 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p10 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p11 = NULL;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> CALL ConsultarRegistro(@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> SELECT @p1 AS tipoDocumento,
+    ->        @p2 AS numeroDocumento,
+    ->        @p3 AS nombre,
+    ->        @p4 AS apellido,
+    ->        @p5 AS torre,
+    ->        @p6 AS piso,
+    ->        @p7 AS apartamento,
+    ->        @p8 AS correo,
+    ->        @p9 AS celular,
+    ->        @p10 AS usuario,
+    ->        @p11 AS contraseña;
++---------------+-----------------+--------+----------+-------+------+-------------+-----------------+-----------+---------+------------+
+| tipoDocumento | numeroDocumento | nombre | apellido | torre | piso | apartamento | correo          | celular   | usuario | contraseña |
++---------------+-----------------+--------+----------+-------+------+-------------+-----------------+-----------+---------+------------+
+| cedula        |         2432546 | lionel | messi    |     1 |    1 |         101 | messi@gmail.com | 320345455 | leo1243 | messi34    |
++---------------+-----------------+--------+----------+-------+------+-------------+-----------------+-----------+---------+------------+
+1 row in set (0.000 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EliminarPiso(IN p_idPiso INT)
+    -> BEGIN
+    ->     DELETE FROM piso WHERE idPiso = p_idPiso;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EditarPiso(
+    ->     IN p_idPiso INT,
+    ->     IN p_nombrePiso VARCHAR(140)
+    -> )
+    -> BEGIN
+    ->     UPDATE piso
+    ->     SET nombrePiso = p_nombrePiso
+    ->     WHERE idPiso = p_idPiso;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE AgregarPiso(
+    ->     IN p_nombrePiso VARCHAR(140)
+    -> )
+    -> BEGIN
+    ->     INSERT INTO piso (nombrePiso) VALUES (p_nombrePiso);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarPiso(
+    ->     IN p_idPiso INT,
+    ->     OUT p_nombrePiso VARCHAR(140)
+    -> )
+    -> BEGIN
+    ->     SELECT nombrePiso INTO p_nombrePiso
+    ->     FROM piso
+    ->     WHERE idPiso = p_idPiso;
+    -> END //
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EliminarPisoApartamento(IN p_pisos INT, IN p_apartament INT)
+    -> BEGIN
+    ->     DELETE FROM piso_apartamento WHERE pisos = p_pisos AND apartament = p_apartament;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EditarPisoApartamento(
+    ->     IN p_pisos INT,
+    ->     IN p_apartament INT,
+    ->     IN p_nuevoPiso INT,
+    ->     IN p_nuevoApartamento INT
+    -> )
+    -> BEGIN
+    ->     UPDATE piso_apartamento
+    ->     SET pisos = p_nuevoPiso, apartament = p_nuevoApartamento
+    ->     WHERE pisos = p_pisos AND apartament = p_apartament;
+    -> END //
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE AgregarPisoApartamento(
+    ->     IN p_pisos INT,
+    ->     IN p_apartament INT
+    -> )
+    -> BEGIN
+    ->     INSERT INTO piso_apartamento (pisos, apartament) VALUES (p_pisos, p_apartament);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarPisoApartamento(
+    ->     IN p_pisos INT,
+    ->     IN p_apartament INT,
+    ->     OUT p_nuevoPiso INT,
+    ->     OUT p_nuevoApartamento INT
+    -> )
+    -> BEGIN
+    ->     SELECT pisos, apartament INTO p_nuevoPiso, p_nuevoApartamento
+    ->     FROM piso_apartamento
+    ->     WHERE pisos = p_pisos AND apartament = p_apartament;
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EliminarCita(IN p_idCita INT)
+    -> BEGIN
+    ->     DELETE FROM programar_cita WHERE idCita = p_idCita;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EditarCita(
+    ->     IN p_idCita INT,
+    ->     IN p_tipoCita VARCHAR(145),
+    ->     IN p_torre INT,
+    ->     IN p_piso INT,
+    ->     IN p_nombre_completo VARCHAR(145),
+    ->     IN p_numeroDocumento INT,
+    ->     IN p_celular INT,
+    ->     IN p_correo VARCHAR(145),
+    ->     IN p_hora TIME,
+    ->     IN p_fecha DATE,
+    ->     IN p_aparta INT
+    -> )
+    -> BEGIN
+    ->     UPDATE programar_cita
+    ->     SET tipoCita = p_tipoCita, torre = p_torre, piso = p_piso, nombre_completo = p_nombre_completo,
+    ->         numeroDocumento = p_numeroDocumento, celular = p_celular, correo = p_correo, hora = p_hora,
+    ->         fecha = p_fecha, aparta = p_aparta
+    ->     WHERE idCita = p_idCita;
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE AgregarCita(
+    ->     IN p_tipoCita VARCHAR(145),
+    ->     IN p_torre INT,
+    ->     IN p_piso INT,
+    ->     IN p_nombre_completo VARCHAR(145),
+    ->     IN p_numeroDocumento INT,
+    ->     IN p_celular INT,
+    ->     IN p_correo VARCHAR(145),
+    ->     IN p_hora TIME,
+    ->     IN p_fecha DATE,
+    ->     IN p_aparta INT
+    -> )
+    -> BEGIN
+    ->     INSERT INTO programar_cita (tipoCita, torre, piso, nombre_completo, numeroDocumento, celular, correo, hora, fecha, aparta)
+    ->     VALUES (p_tipoCita, p_torre, p_piso, p_nombre_completo, p_numeroDocumento, p_celular, p_correo, p_hora, p_fecha, p_aparta);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarCita(
+    ->     IN p_idCita INT,
+    ->     OUT p_tipoCita VARCHAR(145),
+    ->     OUT p_torre INT,
+    ->     OUT p_piso INT,
+    ->     OUT p_nombre_completo VARCHAR(145),
+    ->     OUT p_numeroDocumento INT,
+    ->     OUT p_celular INT,
+    ->     OUT p_correo VARCHAR(145),
+    ->     OUT p_hora TIME,
+    ->     OUT p_fecha DATE,
+    ->     OUT p_aparta INT
+    -> )
+    -> BEGIN
+    ->     SELECT tipoCita, torre, piso, nombre_completo, numeroDocumento, celular, correo, hora, fecha, aparta
+    ->     INTO p_tipoCita, p_torre, p_piso, p_nombre_completo, p_numeroDocumento, p_celular, p_correo, p_hora, p_fecha, p_aparta
+    ->     FROM programar_cita
+    ->     WHERE idCita = p_idCita;
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarPisoApartamento(
+    ->     IN p_pisos INT,
+    ->     IN p_apartament INT
+    -> )
+    -> BEGIN
+    ->     SELECT pisos, apartament
+    ->     FROM piso_apartamento
+    ->     WHERE pisos = p_pisos AND apartament = p_apartament;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> CALL ConsultarPisoApartamento(202, 202);
+Empty set (0.001 sec)
+
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [sets]> CALL ConsultarPisoApartamento(202);
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE sets.ConsultarPisoApartamento; expected 2, got 1
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarPisoApartamento(
+    ->     IN p_pisos INT,
+    ->     IN p_apartament INT
+    -> )
+    -> BEGIN
+    ->     SELECT pisos, apartament
+    ->     FROM piso_apartamento
+    ->     WHERE pisos = p_pisos AND apartament = p_apartament;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> CALL ConsultarPisoApartamento(202, 202);
+Empty set (0.001 sec)
+
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [sets]> SELECT pisos, apartament
+    -> FROM piso_apartamento
+    -> WHERE pisos = 202 AND apartament = 202;
+Empty set (0.000 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarPisoApartamento(
+    ->     IN p_pisos INT,
+    ->     IN p_apartament INT
+    -> )
+    -> BEGIN
+    ->     SELECT pisos, apartament
+    ->     FROM piso_apartamento
+    ->     WHERE pisos = p_pisos AND apartament = p_apartament;
+    -> END //
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> CALL ConsultarPisoApartamento(2, 202);
++-------+------------+
+| pisos | apartament |
++-------+------------+
+|     2 |        202 |
++-------+------------+
+1 row in set (0.001 sec)
+
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE AgregarRegistroTorre(
+    ->     IN p_idRol VARCHAR(150),
+    ->     IN p_idTorre INT
+    -> )
+    -> BEGIN
+    ->     INSERT INTO registro_torre (idRol, idTorre)
+    ->     VALUES (p_idRol, p_idTorre);
+    -> END //
+Query OK, 0 rows affected (0.009 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EditarRegistroTorre(
+    ->     IN p_idRol VARCHAR(150),
+    ->     IN p_idTorre INT
+    -> )
+    -> BEGIN
+    ->     UPDATE registro_torre
+    ->     SET idTorre = p_idTorre
+    ->     WHERE idRol = p_idRol;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EliminarRegistroTorre(
+    ->     IN p_idRol VARCHAR(150),
+    ->     IN p_idTorre INT
+    -> )
+    -> BEGIN
+    ->     DELETE FROM registro_torre
+    ->     WHERE idRol = p_idRol AND idTorre = p_idTorre;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarRegistroTorre(
+    ->     IN p_idRol VARCHAR(150),
+    ->     OUT p_idTorre INT
+    -> )
+    -> BEGIN
+    ->     SELECT idTorre
+    ->     INTO p_idTorre
+    ->     FROM registro_torre
+    ->     WHERE idRol = p_idRol;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE AgregarTorre(
+    ->     IN p_nombreTorre VARCHAR(110)
+    -> )
+    -> BEGIN
+    ->     INSERT INTO torre (nombreTorre)
+    ->     VALUES (p_nombreTorre);
+    -> END //
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EditarTorre(
+    ->     IN p_idTorre INT,
+    ->     IN p_nombreTorre VARCHAR(110)
+    -> )
+    -> BEGIN
+    ->     UPDATE torre
+    ->     SET nombreTorre = p_nombreTorre
+    ->     WHERE idTorre = p_idTorre;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EliminarTorre(
+    ->     IN p_idTorre INT
+    -> )
+    -> BEGIN
+    ->     DELETE FROM torre
+    ->     WHERE idTorre = p_idTorre;
+    -> END //
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarTorre(
+    ->     IN p_idTorre INT,
+    ->     OUT p_nombreTorre VARCHAR(110)
+    -> )
+    -> BEGIN
+    ->     SELECT nombreTorre
+    ->     INTO p_nombreTorre
+    ->     FROM torre
+    ->     WHERE idTorre = p_idTorre;
+    -> END //
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE AgregarTorrePiso(
+    ->     IN p_torre INT,
+    ->     IN p_piso INT
+    -> )
+    -> BEGIN
+    ->     INSERT INTO torre_piso (torre, piso)
+    ->     VALUES (p_torre, p_piso);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EditarTorrePiso(
+    ->     IN p_torre INT,
+    ->     IN p_piso INT
+    -> )
+    -> BEGIN
+    ->     UPDATE torre_piso
+    ->     SET piso = p_piso
+    ->     WHERE torre = p_torre;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EliminarTorrePiso(
+    ->     IN p_torre INT,
+    ->     IN p_piso INT
+    -> )
+    -> BEGIN
+    ->     DELETE FROM torre_piso
+    ->     WHERE torre = p_torre AND piso = p_piso;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarTorrePiso(
+    ->     IN p_torre INT,
+    ->     IN p_piso INT,
+    ->     OUT p_resultado VARCHAR(255)
+    -> )
+    -> BEGIN
+    ->     DECLARE resultado INT DEFAULT 0;
+    ->
+    ->     SELECT COUNT(*)
+    ->     INTO resultado
+    ->     FROM torre_piso
+    ->     WHERE torre = p_torre AND piso = p_piso;
+    ->
+    ->     SET p_resultado = IF(resultado > 0, 'Existen registros', 'No existen registros');
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarTorrePiso(
+    ->     IN p_torre INT,
+    ->     IN p_piso INT
+    -> )
+    -> BEGIN
+    ->     SELECT torre, piso
+    ->     FROM torre_piso
+    ->     WHERE torre = p_torre AND piso = p_piso;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> SET @p_torre = 1;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p_piso = 101;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> CALL ConsultarTorrePiso(@p_torre, @p_piso);
+Empty set (0.000 sec)
+
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarTorrePiso(
+    ->     IN p_torre INT,
+    ->     IN p_piso INT
+    -> )
+    -> BEGIN
+    ->     SELECT torre, piso
+    ->     FROM torre_piso
+    ->     WHERE torre = p_torre AND piso = p_piso;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> SET @p_torre = 1;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> SET @p_piso = 2;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sets]> CALL ConsultarTorrePiso(@p_torre, @p_piso);
++-------+------+
+| torre | piso |
++-------+------+
+|     1 |    2 |
++-------+------+
+1 row in set (0.001 sec)
+
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE AgregarZonasComunes(
+    ->     IN p_tipoZonacomun VARCHAR(145)
+    -> )
+    -> BEGIN
+    ->     INSERT INTO zonascomunes (tipoZonacomun)
+    ->     VALUES (p_tipoZonacomun);
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EditarZonasComunes(
+    ->     IN p_idZonasComunes INT,
+    ->     IN p_tipoZonacomun VARCHAR(145)
+    -> )
+    -> BEGIN
+    ->     UPDATE zonascomunes
+    ->     SET tipoZonacomun = p_tipoZonacomun
+    ->     WHERE idZonasComunes = p_idZonasComunes;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE EliminarZonasComunes(
+    ->     IN p_idZonasComunes INT
+    -> )
+    -> BEGIN
+    ->     DELETE FROM zonascomunes
+    ->     WHERE idZonasComunes = p_idZonasComunes;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]> DELIMITER //
+MariaDB [sets]>
+MariaDB [sets]> CREATE PROCEDURE ConsultarZonasComunes(
+    ->     IN p_idZonasComunes INT,
+    ->     OUT p_tipoZonacomun VARCHAR(145)
+    -> )
+    -> BEGIN
+    ->     SELECT tipoZonacomun
+    ->     INTO p_tipoZonacomun
+    ->     FROM zonascomunes
+    ->     WHERE idZonasComunes = p_idZonasComunes;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [sets]>
+MariaDB [sets]> DELIMITER ;
+MariaDB [sets]>
